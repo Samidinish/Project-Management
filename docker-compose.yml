@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  mysql:
+    container_name: pms-db
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234  # Your root password
+      MYSQL_USER: mysqluser      # A new username (not 'root')
+      MYSQL_PASSWORD: userpass   # Password for the new user
+      MYSQL_DATABASE: pms-db     # Optional: Database to be created
+    volumes:
+      - mysql:/var/lib/mysql
+    ports:
+      - "3307:3307"
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: pgadmin-spring-data
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+
+volumes:
+  mysql:
+  pgadmin:
